@@ -23,9 +23,10 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	//TestManager::Run();
+	TestManager::Run();
 
-	String test = "Hello world!";
+	/*
+	String test;
 
 	//Couting
 	cout << "Printing:\n";
@@ -40,23 +41,20 @@ int main()
 		cout << "[" << i << "]\t" << test[i] << "\n";
 	}
 	
-	//Changing index
-	cout << "\nChanging index:\n";
-
-	test[2] = 'A';
-
-	cout << test << "\n";
-	
 	
 	//Constants
-	cout << "Constant indexing:\n";
+	cout << "Indexing a constant:\n";
 
 	const String test2 = "Hello";
 
 	cout << test2[1];
 
+	//Changing the string contents
+	//test = new String();
+
 	//Finish
 	cout << "\n\n\n\n\n";
+	*/
 
 	return 0;
 }

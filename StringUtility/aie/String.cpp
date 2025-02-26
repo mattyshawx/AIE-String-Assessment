@@ -14,15 +14,17 @@ namespace aie
 	//					Constructors and destructor
 	//------------------------------------------------------------------------
 
+	//This creates a blank string (just the null terminator) from no input
 	String::String()
 	{
-		
+		m_characters = new char[1]{'\0'};
 	}
 
-	String::String(const char* str)
+	//Creates a string from a given character array
+	String::String(const char* characters)
 	{
 		//Get the length of the given character array
-		m_length = strlen(str);
+		m_length = strlen(characters);
 
 		//Initialise the new character array
 		m_characters = new char[m_length + 1];
@@ -30,22 +32,26 @@ namespace aie
 		//Fill out the array
 		for (int i = 0; i < m_length; i++)
 		{
-			m_characters[i] = str[i];
+			m_characters[i] = characters[i];
 		}
 
 		//Add the null terminator
 		m_characters[m_length] = '\0';
 	}
 
-	String::String(const String& other)
+	//Creates a string from another string
+	String::String(const String& copyString)
 	{
 
 	}
 
+	//Deallocates memory
 	String::~String()
 	{
+		//Debugging
+		cout << "Deleting | " << *this << "\n";
+
 		//Deallocate the character array
-		cout << "Deleting\n";
 		delete m_characters;
 	}
 
@@ -54,21 +60,28 @@ namespace aie
 	//					Utility functions
 	//------------------------------------------------------------------------
 
+	//Returns the length of the string (doesn't include the null terminator)
 	size_t String::Length() const
 	{
 		return m_length;
 	}
 
-	String& String::Append(const String& str)
+	//Adds another string to the end of this one
+	String& String::Append(const String& stringToAdd)
 	{
 		
 
 		return *this;
 	}
 
+	//
 	String& String::ToLower()
 	{
+		//Go through the characters
+		for (int i = 0; i < m_length; i++)
+		{
 
+		}
 
 		return *this;
 	}
@@ -80,14 +93,14 @@ namespace aie
 		return *this;
 	}
 
-	int String::FindCharacter(char toFind)
+	int String::FindCharacter(char targetCharacter)
 	{
-
+		
 
 		return 0;
 	}
 
-	int String::Replace(char toFind, char toReplace)
+	int String::Replace(char targetCharacter, char replacementCharacter)
 	{
 		
 
@@ -99,17 +112,17 @@ namespace aie
 	//					Operators
 	//------------------------------------------------------------------------
 
-	istream& operator>>(istream& stream, String& str)
+	istream& operator>>(istream& stream, String& stringToUse)
 	{
 		
 
 		return stream;
 	}
 
-	ostream& operator<<(ostream& stream, const String& str)
+	ostream& operator<<(ostream& stream, const String& stringToUse)
 	{
 		//Add the characters array to the stream
-		stream << str.m_characters;
+		stream << stringToUse.m_characters;
 
 		return stream; 
 	}
@@ -152,7 +165,7 @@ namespace aie
 		return m_characters[index];
 	}
 
-	bool String::operator<(const String& rhs)
+	bool String::operator<(const String& compareString)
 	{
 
 
