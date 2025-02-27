@@ -55,7 +55,7 @@ namespace aie
 		//Read in cin to a standard string
 		std::string inputString;
 		std::getline(std::cin, inputString);
-		cout << inputString << " mate";
+
 		//Convert the input to a character array, and override the characters
 		this->SetCharacters(inputString.c_str());
 	}
@@ -69,7 +69,8 @@ namespace aie
 	//Adds another string to the end of this one
 	String& String::Append(const String& stringToAdd)
 	{
-		
+		//Create a new array which will contain
+		//char*
 
 		return *this;
 	}
@@ -110,6 +111,12 @@ namespace aie
 		return 0;
 	}
 
+	//This just returns m_characters
+	char* String::GetCharacters()
+	{
+		return m_characters;
+	}
+
 
 	//------------------------------------------------------------------------
 	//					Operators
@@ -137,10 +144,11 @@ namespace aie
 		return stream; 
 	}
 
-	//Sets the string's characters to those of the compareString
-	String& String::operator=(const String& compareString)
+	//Sets the string's characters to those of the stringToCopyFrom
+	String& String::operator=(const String& stringToCopyFrom)
 	{
-
+		//Set the characters to the ones of the string to copy from
+		this->SetCharacters(stringToCopyFrom.m_characters);
 
 		return *this;
 	}
@@ -221,13 +229,7 @@ namespace aie
 		//Initialise the new character array
 		m_characters = new char[m_length + 1];
 
-		//Fill out the array
-		for (int i = 0; i < m_length; i++)
-		{
-			m_characters[i] = newCharacters[i];
-		}
-
-		//Add the null terminator
-		m_characters[m_length] = '\0';
+		//Copy the new characters into my characters
+		strcpy_s(m_characters, m_length + 1, newCharacters);
 	}
 }

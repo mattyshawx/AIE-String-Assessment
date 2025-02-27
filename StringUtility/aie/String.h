@@ -32,6 +32,8 @@ namespace aie
 
 		int FindCharacter(char targetCharacter);
 		int Replace(char targetCharacter, char replacementCharacter);
+
+		char* GetCharacters();
 		
 		//Public operators
 	public:
@@ -39,7 +41,7 @@ namespace aie
 		friend istream& operator>>(istream& stream, String& stringToUse);
 		friend ostream& operator<<(ostream& stream, const String& stringToUse);
 
-		String& operator=(const String& targetString);
+		String& operator=(const String& stringToCopyFrom);
 
 		bool operator==(const String& compareString);
 		bool operator!=(const String& compareString);

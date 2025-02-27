@@ -74,7 +74,7 @@ String string1 = "Hello world!";
 String string2 = "Okay bye...";
 const String stringConstant = "I am the constant";
 const String stringEmpty;
-String string1Copy = string1;
+String stringCopy = string1;
 
 //Start up function
 DEFINE_TEST_INIT_FUNCTION(Initialise)
@@ -92,7 +92,7 @@ DEFINE_TEST_INIT_FUNCTION(Initialise)
 		<< "\n 2: " << STRING(string2)
 		<< "\n 3: " << STRING(stringConstant) << " <-- A constant string"
 		<< "\n 4: " << STRING(stringEmpty) << " <-- An empty string"
-		<< "\n 5: " << STRING(string1Copy) << " <-- A copy of string 1"
+		<< "\n 5: " << STRING(string1) << " <-- A copy of string1"
 		<< "\n\n";
 }
 
@@ -145,6 +145,7 @@ DEFINE_TEST_FUNCTION(ReadLine)
 
 	return true;
 }
+
 
 //------------------------------------------------------------------------
 //					String functions
@@ -207,9 +208,10 @@ DEFINE_TEST_FUNCTION(Equality)
 	cout << TEST_TITLE("Checking equality of 2 strings");
 
 	cout << " String 1: " << STRING(string1);
-	cout << "\n String 2: " << STRING(string1Copy);
+	cout << "\n String 2: " << STRING(stringCopy);
 
-	if (string1 != string1Copy)
+	//Make sure it works
+	if (string1 != stringCopy)
 	{
 		reason = "Expected two strings to be equal, but they were deemed different";
 
@@ -227,12 +229,37 @@ DEFINE_TEST_FUNCTION(Inequality)
 	cout << " String 1: " << STRING(string1);
 	cout << "\n String 2: " << STRING(string2);
 
+	//Make sure it works
 	if (string1 == string2)
 	{
 		reason = "Expected two strings to be different, but they were deemed the same";
 
 		return false;
 	}
+
+	return true;
+}
+
+//Demonstrates the equals operator
+DEFINE_TEST_FUNCTION(Equals)
+{
+	cout << TEST_TITLE("Copying a string");
+
+	cout << "Copying string 2 (" << STRING(string2) << ")\n";
+	cout << "To string 5 (" << STRING(stringCopy) << ")\n";
+
+	//Copy string2 to a new string
+	stringCopy = string2;
+
+	//Make sure it worked
+	if (stringCopy != string2)
+	{
+		reason = format("Failed to copy, was supposed to be \"{}\", but it was \"{}\"", string2.GetCharacters(), stringCopy.GetCharacters());
+
+		return false;
+	}
+
+	cout << "\nString 5 is now " << STRING(stringCopy);
 
 	return true;
 }

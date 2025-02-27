@@ -6,10 +6,17 @@
 #ifdef _DEBUG
 // ReSharper disable once IdentifierTypo
 // ReSharper disable once CppInconsistentNaming
-#define _CRTDBG_MAP_ALLOC  // NOLINT(bugprone-reserved-identifier, clang-diagnostic-reserved-macro-identifier, clang-diagnostic-unused-macros)
+
+#if _DEBUG //Memory leak catcher
+	#define _CRTDBG_MAP_ALLOC
+	#include <crtdbg.h>
+#endif
+
 #include <crtdbg.h>
 #include <cstdlib>
 #endif
+
+
 
 #include <iostream>
 
@@ -19,8 +26,9 @@ using std::cout;
 
 int main()
 {
-#ifdef _DEBUG
+#if _DEBUG //Catch those pesky bugguses
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetBreakAlloc(183);
 #endif
 
 	TestManager::Run();
