@@ -46,6 +46,11 @@ namespace aie
 		const char& operator[](size_t index) const;
 		bool operator<(const String& compareString);
 
+		//Private functions
+	private:
+
+		void SetCharacters(const char* newCharacters);
+
 		//Private variables
 	private:
 

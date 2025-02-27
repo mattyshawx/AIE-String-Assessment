@@ -24,26 +24,13 @@ namespace aie
 	//Creates a string from a given character array
 	String::String(const char* characters)
 	{
-		//Get the length of the given character array
-		m_length = strlen(characters);
-
-		//Initialise the new character array
-		m_characters = new char[m_length + 1];
-		
-		//Fill out the array
-		for (int i = 0; i < m_length; i++)
-		{
-			m_characters[i] = characters[i];
-		}
-
-		//Add the null terminator
-		m_characters[m_length] = '\0';
+		SetCharacters(characters);
 	}
 
 	//Creates a string from another string
 	String::String(const String& copyString)
 	{
-
+		SetCharacters(copyString.m_characters);
 	}
 
 	//Deallocates memory
@@ -119,7 +106,12 @@ namespace aie
 	//Stream in
 	istream& operator>>(istream& stream, String& stringToUse)
 	{
-		
+		//Convert the stream to a standard string
+		std::string streamString;
+		std::getline(stream, streamString);
+
+		//Convert the standard string to a character array mate and apply it to the characters
+		stringToUse.SetCharacters(streamString.c_str());
 
 		return stream;
 	}
@@ -180,5 +172,32 @@ namespace aie
 
 
 		return false;
+	}
+
+
+	//------------------------------------------------------------------------
+	//					Private functions
+	//------------------------------------------------------------------------
+
+	//This deallocates the old characters, and sets up new ones from a given character array
+	void String::SetCharacters(const char* newCharacters)
+	{
+		//Deallocate the old characters
+		delete[] m_characters;
+
+		//Get the length of the given character array
+		m_length = strlen(newCharacters);
+
+		//Initialise the new character array
+		m_characters = new char[m_length + 1];
+
+		//Fill out the array
+		for (int i = 0; i < m_length; i++)
+		{
+			m_characters[i] = newCharacters[i];
+		}
+
+		//Add the null terminator
+		m_characters[m_length] = '\0';
 	}
 }

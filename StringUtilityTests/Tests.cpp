@@ -81,6 +81,11 @@ const String stringEmpty;
 //Start up function
 DEFINE_TEST_INIT_FUNCTION(Initialise)
 {
+	//Print hello world for compliance
+	String compliantString = "Hello, World!";
+	cout << compliantString << "\n\n\n";
+
+
 	cout << SECTION("Initialisation");
 
 	//Print out the strings
@@ -100,9 +105,9 @@ DEFINE_TEST_INIT_FUNCTION(Initialise)
 //Demonstrates streaming in a whole string
 DEFINE_TEST_FUNCTION(StreamOut)
 {
-	cout << SECTION("Streaming out");
+	cout << SECTION("Streaming");
 
-	cout << TEST_TITLE("Streaming out a string");
+	cout << TEST_TITLE("Streaming out");
 
 	//Stream out the string
 	cout << string1 << "\n\n";
@@ -119,34 +124,35 @@ DEFINE_TEST_FUNCTION(StreamOut)
 }
 
 //Demonstrates streaming a string in
-/*
 DEFINE_TEST_FUNCTION(StreamIn)
 {
-	cout << SECTION("Streaming into a string");
-
-	cout << TEST_TITLE("Streaming in from the console");
+	cout << TEST_TITLE("Streaming in");
 
 	//Ask the user for input
-	istream inputStream();
+	cout << "Input a string (no spaces):\n > ";
 
-	cout << "Input a string:\n > ";
+	//Stream the input into a new string
+	String testString;
+	cin >> std::setw(999999) >> testString; //She'll be right
+	
+	//Check with the user that the string is correct
+	cout << "\n Did you input \"" << testString;
 
-	std::getline(cin, inputStream);
+	if (!VerifyOutput("\"?"))
+	{
+		reason = "The string streamed in was deemed incorrect";
 
-
-	cout << testString;
+		return false;
+	}
 
 	return true;
 }
-*/
 
 //------------------------------------------------------------------------
 //					String functions
 //------------------------------------------------------------------------
-//Demonstrates streaming in from the console
 
 
-//Demonstrates streaming to the console
 
 
 //------------------------------------------------------------------------
