@@ -22,6 +22,8 @@ namespace aie
 		//Public functions
 	public:
 
+		void ReadLine();
+
 		size_t Length() const;
 
 		String& Append(const String& stringToAdd);

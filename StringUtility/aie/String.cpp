@@ -25,13 +25,13 @@ namespace aie
 	//Creates a string from a given character array
 	String::String(const char* characters)
 	{
-		SetCharacters(characters);
+		this->SetCharacters(characters);
 	}
 
 	//Creates a string from another string
 	String::String(const String& copyString)
 	{
-		SetCharacters(copyString.m_characters);
+		this->SetCharacters(copyString.m_characters);
 	}
 
 	//Deallocates memory
@@ -48,6 +48,17 @@ namespace aie
 	//------------------------------------------------------------------------
 	//					Utility functions
 	//------------------------------------------------------------------------
+
+	//This reads the cin, and overrides the characters
+	void String::ReadLine()
+	{
+		//Read in cin to a standard string
+		std::string inputString;
+		std::getline(std::cin, inputString);
+		cout << inputString << " mate";
+		//Convert the input to a character array, and override the characters
+		this->SetCharacters(inputString.c_str());
+	}
 
 	//Returns the length of the string (doesn't include the null terminator)
 	size_t String::Length() const

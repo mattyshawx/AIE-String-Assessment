@@ -16,9 +16,6 @@
 using aie::String;
 using aie::TestManager;
 
-using std::istream;
-using std::ostream;
-
 using std::cout;
 using std::cin;
 
@@ -59,12 +56,12 @@ bool VerifyOutput(std::string question)
 	//Question the user
 	cout << question << " (y/n):\n > ";
 
-	//Read the input
-	char input;
-	cin >> std::setw(1) >> input;
+	//Read the input (using my string class hah)
+	String input;
+	input.ReadLine();
 
 	//Check the output
-	return input == 'y';
+	return input[0] == 'y';
 }
 
 
@@ -125,17 +122,16 @@ DEFINE_TEST_FUNCTION(StreamOut)
 	return true;
 }
 
-//Demonstrates streaming a string in
-DEFINE_TEST_FUNCTION(StreamIn)
+//Demonstrates reading the console
+DEFINE_TEST_FUNCTION(ReadLine)
 {
-	cout << TEST_TITLE("Streaming in");
+	cout << TEST_TITLE("Reading line");
 
 	//Ask the user for input
-	cout << "Input a string (no spaces):\n > ";
-
-	//Stream the input into a new string
+	cout << "Input a string:\n > ";
+	
 	String testString;
-	cin >> std::setw(999999) >> testString; //She'll be right
+	testString.ReadLine();
 	
 	//Check with the user that the string is correct
 	cout << "\n Did you input \"" << testString;
