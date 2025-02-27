@@ -77,6 +77,7 @@ String string1 = "Hello world!";
 String string2 = "Okay bye...";
 const String stringConstant = "I am the constant";
 const String stringEmpty;
+String string1Copy = string1;
 
 //Start up function
 DEFINE_TEST_INIT_FUNCTION(Initialise)
@@ -89,11 +90,12 @@ DEFINE_TEST_INIT_FUNCTION(Initialise)
 	cout << SECTION("Initialisation");
 
 	//Print out the strings
-	cout << TITLE("There are four strings for testing:")
+	cout << TITLE("There are five strings for testing:")
 		<< " 1: " << STRING(string1)
 		<< "\n 2: " << STRING(string2)
 		<< "\n 3: " << STRING(stringConstant) << " <-- A constant string"
-		<< "\n 3: " << STRING(stringEmpty) << " <-- An empty string"
+		<< "\n 4: " << STRING(stringEmpty) << " <-- An empty string"
+		<< "\n 5: " << STRING(string1Copy) << " <-- A copy of string 1"
 		<< "\n\n";
 }
 
@@ -160,7 +162,7 @@ DEFINE_TEST_FUNCTION(StreamIn)
 //------------------------------------------------------------------------
 
 //Demonstrates the indexing in bounds
-DEFINE_TEST_FUNCTION(Index)
+DEFINE_TEST_FUNCTION(IndexInBounds)
 {
 	cout << SECTION("Operators");
 
@@ -169,12 +171,72 @@ DEFINE_TEST_FUNCTION(Index)
 	//Check an index in bounds
 	char resultingCharacter = string1[6];
 
-	if (resultingCharacter != 'w') //Make sure it got the right character
+	cout << STRING(string1) << "[6]: " << resultingCharacter;
+
+	//Make sure it got the right character
+	if (resultingCharacter != 'w')
 	{
 		reason = format("Expected 'w', got '{}'", resultingCharacter);
 
 		return false;
 	}
 	
+	return true;
+}
+
+//Demonstrates indexing out of bounds
+DEFINE_TEST_FUNCTION(IndexOutOfBounds)
+{
+	cout << TEST_TITLE("Indexing out of bounds");
+
+	//Check an index in bounds
+	char resultingCharacter = string1[25];
+
+	cout << STRING(string1) << "[25]: " << resultingCharacter;
+
+	//Make sure it got the right character
+	if (resultingCharacter != '\0')
+	{
+		reason = format("Expected '\\0' (null terminator), got '{}'", resultingCharacter);
+
+		return false;
+	}
+
+	return true;
+}
+
+//Demonstrates the equality operator
+DEFINE_TEST_FUNCTION(Equality)
+{
+	cout << TEST_TITLE("Checking equality of 2 strings");
+
+	cout << " String 1: " << STRING(string1);
+	cout << "\n String 2: " << STRING(string1Copy);
+
+	if (string1 != string1Copy)
+	{
+		reason = "Expected two strings to be equal, but they were deemed different";
+
+		return false;
+	}
+
+	return true;
+}
+
+//Demonstrates the NOT equality operator
+DEFINE_TEST_FUNCTION(Inequality)
+{
+	cout << TEST_TITLE("Checking inequality of 2 strings");
+
+	cout << " String 1: " << STRING(string1);
+	cout << "\n String 2: " << STRING(string2);
+
+	if (string1 == string2)
+	{
+		reason = "Expected two strings to be different, but they were deemed the same";
+
+		return false;
+	}
+
 	return true;
 }

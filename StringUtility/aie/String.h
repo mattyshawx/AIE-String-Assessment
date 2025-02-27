@@ -39,8 +39,8 @@ namespace aie
 
 		String& operator=(const String& targetString);
 
-		bool operator==(const String& checkString);
-		bool operator!=(const String& checkString);
+		bool operator==(const String& compareString);
+		bool operator!=(const String& compareString);
 
 		char& operator[](size_t index);
 		const char& operator[](size_t index) const;

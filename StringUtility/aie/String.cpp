@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string> //Used for std::getline and nothing else
 
+
 using std::cout;
 
 
@@ -43,7 +44,7 @@ namespace aie
 		delete m_characters;
 	}
 
-
+	
 	//------------------------------------------------------------------------
 	//					Utility functions
 	//------------------------------------------------------------------------
@@ -78,7 +79,7 @@ namespace aie
 	String& String::ToUpper()
 	{
 
-
+		
 		return *this;
 	}
 
@@ -125,8 +126,8 @@ namespace aie
 		return stream; 
 	}
 
-	//Sets the string's characters to those of the targetString
-	String& String::operator=(const String& targetString)
+	//Sets the string's characters to those of the compareString
+	String& String::operator=(const String& compareString)
 	{
 
 
@@ -134,11 +135,29 @@ namespace aie
 	}
 
 	//Checks if a string IS equal to this one
-	bool String::operator==(const String& checkString)
+	bool String::operator==(const String& compareString)
 	{
+		//Make sure the strings are the same length before even trying to compare their characters
+		if (m_length != compareString.Length())
+		{
+			return false; //As they're different lengths, they can't be the same
+		}
 
+		//Go through all characters on this string, until one does not match on the
+		for (int i = 0; i < m_length; i++)
+		{
+			//Grab the characters at the index from both this and the other string
+			char myCharacter = m_characters[i];
+			char compareCharacter = compareString[i];
 
-		return false;
+			//See if they are different
+			if (myCharacter != compareCharacter)
+			{
+				return false; //Non matching characters!!!
+			}
+		}
+
+		return true;
 	}
 
 	//Checks if another string is NOT equal to this one
