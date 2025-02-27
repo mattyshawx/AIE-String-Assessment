@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-
+#include <string> //Used for std::getline and nothing else
 
 using std::cout;
 
@@ -18,6 +18,7 @@ namespace aie
 	String::String()
 	{
 		m_characters = new char[1]{'\0'};
+		m_length = 0;
 	}
 
 	//Creates a string from a given character array
@@ -74,7 +75,7 @@ namespace aie
 		return *this;
 	}
 
-	//
+	//This converts all letters in the string to lower case
 	String& String::ToLower()
 	{
 		//Go through the characters
@@ -86,6 +87,7 @@ namespace aie
 		return *this;
 	}
 
+	//Converts all letters in the string to upper case
 	String& String::ToUpper()
 	{
 
@@ -93,13 +95,15 @@ namespace aie
 		return *this;
 	}
 
+	//Finds a given character in the string and returns its index, or -1 if none
 	int String::FindCharacter(char targetCharacter)
 	{
 		
 
-		return 0;
+		return -1;
 	}
 
+	//Replaces all occurences of a given character in the string, and returns the number of replacements done
 	int String::Replace(char targetCharacter, char replacementCharacter)
 	{
 		
@@ -112,6 +116,7 @@ namespace aie
 	//					Operators
 	//------------------------------------------------------------------------
 
+	//Stream in
 	istream& operator>>(istream& stream, String& stringToUse)
 	{
 		
@@ -119,6 +124,7 @@ namespace aie
 		return stream;
 	}
 
+	//Stream out
 	ostream& operator<<(ostream& stream, const String& stringToUse)
 	{
 		//Add the characters array to the stream
@@ -127,27 +133,29 @@ namespace aie
 		return stream; 
 	}
 
-	String& String::operator=(const String& rhs)
+	//Sets the string's characters to those of the targetString
+	String& String::operator=(const String& targetString)
 	{
 
 
 		return *this;
 	}
 
-	bool String::operator==(const String& rhs)
+	//Checks if a string IS equal to this one
+	bool String::operator==(const String& checkString)
 	{
 
 
 		return false;
 	}
 
-	bool String::operator!=(const String& rhs)
+	//Checks if another string is NOT equal to this one
+	bool String::operator!=(const String& checkString)
 	{
-
-
-		return false;
+		return !(*this == checkString);
 	}
 
+	//Returns the character at the requested index, or a null terminator if out of bounds
 	char& String::operator[](size_t index)
 	{
 		char returnCharacter = '\0';
@@ -160,11 +168,13 @@ namespace aie
 		return returnCharacter;
 	}
 
+	//Same as above, except for constant type strings
 	const char& String::operator[](size_t index) const
 	{
 		return m_characters[index];
 	}
 
+	//Checks to see if this string comes before the other one, alphabetically
 	bool String::operator<(const String& compareString)
 	{
 

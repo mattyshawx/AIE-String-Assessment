@@ -25,36 +25,5 @@ int main()
 
 	TestManager::Run();
 
-	/*
-	String test;
-
-	//Couting
-	cout << "Printing:\n";
-
-	cout << test << "\n";
-
-	//Indexing
-	cout << "\nIndexing:\n";
-
-	for (size_t i = 0; i < test.Length(); i++)
-	{
-		cout << "[" << i << "]\t" << test[i] << "\n";
-	}
-	
-	
-	//Constants
-	cout << "Indexing a constant:\n";
-
-	const String test2 = "Hello";
-
-	cout << test2[1];
-
-	//Changing the string contents
-	//test = new String();
-
-	//Finish
-	cout << "\n\n\n\n\n";
-	*/
-
 	return 0;
 }

@@ -39,11 +39,11 @@ namespace aie
 		{
 			if (!test(reason))
 			{
-				std::cout << std::format("\n\n\x1B[31m[ FAIL ] {}: \x1B[37m{}\n", name, reason);
+				std::cout << std::format("\n\n\x1B[31m[ FAIL ] {}: \x1B[37m{}\n\n", name, reason);
 			}
 			else
 			{
-				std::cout << std::format("\n\n\x1B[32m[ PASS ] {}\x1B[37m\n", name);
+				std::cout << std::format("\n\n\x1B[32m[ PASS ] {}\x1B[37m\n\n", name);
 				passed++;
 			}
 		}
