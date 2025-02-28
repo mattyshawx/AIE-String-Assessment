@@ -37,14 +37,11 @@ namespace aie
 	//Deallocates memory
 	String::~String()
 	{
-		//Debugging
-		cout << "Deleting | " << *this << "\n";
-
 		//Deallocate the character array
 		delete m_characters;
 	}
 
-	
+
 	//------------------------------------------------------------------------
 	//					Utility functions
 	//------------------------------------------------------------------------
@@ -69,8 +66,30 @@ namespace aie
 	//Adds another string to the end of this one
 	String& String::Append(const String& stringToAdd)
 	{
-		//Create a new array which will contain
-		//char*
+		//Figure out what the new length will be
+		int appendLength = stringToAdd.Length();
+		int newLength = m_length + appendLength;
+
+		//Create a new array which will contain both the current and appended characters
+		char* newCharacters = new char[newLength + 1];
+
+		//Copy in the existing characters
+		strcpy_s(newCharacters, m_length + 1, m_characters);
+
+		//Copy in the characters to append
+		for (int i = 0; i < appendLength; i++)
+		{
+			newCharacters[m_length + i] = stringToAdd[i];
+		}
+
+		//Add the null terminator
+		newCharacters[newLength] = '\0';
+
+		//Apply the new characters to the string
+		this->SetCharacters(newCharacters);
+
+		//Deallocate the newCharacters array
+		delete[] newCharacters;
 
 		return *this;
 	}
@@ -81,7 +100,7 @@ namespace aie
 		//Go through the characters
 		for (int i = 0; i < m_length; i++)
 		{
-
+			//Check and see if this character is an uppercase letter
 		}
 
 		return *this;
@@ -106,7 +125,7 @@ namespace aie
 	//Replaces all occurences of a given character in the string, and returns the number of replacements done
 	int String::Replace(char targetCharacter, char replacementCharacter)
 	{
-		
+
 
 		return 0;
 	}
@@ -156,33 +175,13 @@ namespace aie
 	//Checks if a string IS equal to this one
 	bool String::operator==(const String& compareString)
 	{
-		//Make sure the strings are the same length before even trying to compare their characters
-		if (m_length != compareString.Length())
-		{
-			return false; //As they're different lengths, they can't be the same
-		}
-
-		//Go through all characters on this string, until one does not match on the
-		for (int i = 0; i < m_length; i++)
-		{
-			//Grab the characters at the index from both this and the other string
-			char myCharacter = m_characters[i];
-			char compareCharacter = compareString[i];
-
-			//See if they are different
-			if (myCharacter != compareCharacter)
-			{
-				return false; //Non matching characters!!!
-			}
-		}
-
-		return true;
+		return !strcmp(m_characters, compareString.m_characters);
 	}
 
 	//Checks if another string is NOT equal to this one
-	bool String::operator!=(const String& checkString)
+	bool String::operator!=(const String& compareString)
 	{
-		return !(*this == checkString);
+		return !(*this == compareString);
 	}
 
 	//Returns the character at the requested index, or a null terminator if out of bounds

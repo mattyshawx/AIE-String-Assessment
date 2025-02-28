@@ -56,7 +56,7 @@ bool VerifyOutput(std::string question)
 	//Question the user
 	cout << question << " (y/n):\n > ";
 
-	//Read the input (using my string class hah)
+	//Read the input
 	String input;
 	input.ReadLine();
 
@@ -131,7 +131,8 @@ DEFINE_TEST_FUNCTION(ReadLine)
 	cout << "Input a string:\n > ";
 	
 	String testString;
-	testString.ReadLine();
+	//testString.ReadLine(); ended up getting streaming in working, but still keeping read line as it could be of use in a real application
+	cin >> testString;
 	
 	//Check with the user that the string is correct
 	cout << "\n Did you input \"" << testString;
@@ -151,7 +152,58 @@ DEFINE_TEST_FUNCTION(ReadLine)
 //					String functions
 //------------------------------------------------------------------------
 
+//Demonstrates the append function
+DEFINE_TEST_FUNCTION(Append)
+{
+	cout << SECTION("Functions");
 
+	cout << TEST_TITLE("Appending to a string");
+
+	//Create a new string to append
+	String stringToAppend = "I have been appended!";
+
+	cout << "Appending " << STRING(stringToAppend) << " to string 2 (" << STRING(string2) << ")\n";
+
+	//Append
+	string2.Append(stringToAppend);
+
+	cout << "String 2 is now " << STRING(string2);
+
+	//Verify that the appending worked properly
+	String correctString = "Okay bye...I have been appended!";
+
+	if (string2 != correctString)
+	{
+		reason = format("Incorrect result, expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
+
+		return false;
+	}
+
+	return true;
+}
+
+//Demonstrates the to uppercase function
+DEFINE_TEST_FUNCTION(Uppercase)
+{
+	cout << TEST_TITLE("Converting to uppercase");
+
+	cout << "converting " << STRING(string1) << " to uppercase";
+
+	//Convert it to uppercase
+	string1.ToUpper();
+
+	cout << "String 1 is now " << STRING(string1);
+
+	//Make sure it worked
+	String correctString = "HELLO WORLD!";
+
+	if (string1 != correctString)
+	{
+		reason = format("Expected \"{}\", but got \"{}\"", correctString, string1);
+	}
+
+	return true;
+}
 
 
 //------------------------------------------------------------------------
