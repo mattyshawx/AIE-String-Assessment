@@ -122,16 +122,15 @@ DEFINE_TEST_FUNCTION(StreamOut)
 	return true;
 }
 
-//Demonstrates reading the console
-DEFINE_TEST_FUNCTION(ReadLine)
+//Demonstrates streaming in from the console
+DEFINE_TEST_FUNCTION(StreamIn)
 {
-	cout << TEST_TITLE("Reading line");
+	cout << TEST_TITLE("Streaming in");
 
 	//Ask the user for input
 	cout << "Input a string:\n > ";
 	
 	String testString;
-	//testString.ReadLine(); ended up getting streaming in working, but still keeping read line as it could be of use in a real application
 	cin >> testString;
 	
 	//Check with the user that the string is correct
@@ -312,6 +311,7 @@ DEFINE_TEST_FUNCTION(ReplaceCharacters)
 	return true;
 }
 
+
 //------------------------------------------------------------------------
 //					Operators
 //------------------------------------------------------------------------
@@ -418,6 +418,101 @@ DEFINE_TEST_FUNCTION(Equals)
 	}
 
 	cout << "\nString 5 is now " << STRING(stringCopy);
+
+	return true;
+}
+
+//Demonstrates the less than operator, where the string given IS less than
+DEFINE_TEST_FUNCTION(LessThanTrue)
+{
+	cout << TEST_TITLE("Alphabetical comparison where result is less");
+
+	cout << "Comparing " << STRING(string1) << " to " << STRING(string2);
+
+	//Compare the two strings
+	bool isBefore2 = string2 < string1;
+
+	//Make sure the result was right
+	if (!isBefore2)
+	{
+		reason = "String 2 is supposed to occur BEFORE string 1, however the test returned otherwise";
+
+		return false;
+	}
+
+	cout << "\nString 2 comes before string 1";
+
+	return true;
+}
+
+//Demonstrates the less than operator, where the string given is NOT less than
+DEFINE_TEST_FUNCTION(LessThanFalse)
+{
+	cout << TEST_TITLE("Alphabetical comparison where result is greater");
+
+	cout << "Comparing " << STRING(string1) << " to " << STRING(string2);
+
+	//Compare the two strings
+	bool isBefore = string1 < string2;
+
+	//Make sure the result was right
+	if (isBefore)
+	{
+		reason = "String 1 is supposed to occur AFTER string 2, however the test returned otherwise";
+
+		return false;
+	}
+
+	cout << "\nString 2 comes after string 1";
+
+	return true;
+}
+
+//Demonstrates the less than operator, where both strings are the same
+DEFINE_TEST_FUNCTION(LessThanSame)
+{
+	cout << TEST_TITLE("Alphabetical comparison where both strings are the same");
+
+	cout << "Comparing " << STRING(string1) << " to " << STRING(string1);
+
+	//Compare the two strings
+	bool isBefore = string1 < string1;
+
+	//Make sure the result was right
+	if (isBefore)
+	{
+		reason = "Neither string was supposed to occur before, however the test returned otherwise";
+
+		return false;
+	}
+
+	cout << "\nNeither string comes after the other";
+
+	return true;
+}
+
+//Demonstrates the less than operator, where both strings are really similar
+DEFINE_TEST_FUNCTION(LessThanSimilar)
+{
+	cout << TEST_TITLE("Alphabetical comparison where both strings are similar");
+
+	String testString1 = "abcdefgh";
+	String testString2 = "abcdefgi";
+
+	cout << "Comparing " << STRING(testString1) << " to " << STRING(testString2);
+
+	//Compare the two strings
+	bool isBefore = testString1 < testString2;
+
+	//Make sure the result was right
+	if (!isBefore)
+	{
+		reason = "String 2 is supposed to occur BEFORE string 1, however the test returned otherwise";
+
+		return false;
+	}
+
+	cout << "\nString 2 comes before string 1";
 
 	return true;
 }

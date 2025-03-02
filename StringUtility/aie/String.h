@@ -56,6 +56,8 @@ namespace aie
 		void SetCharacters(const char* newCharacters);
 		void ShiftCharacters(int lowerNumber, int upperNumber, int shift);
 
+		int GetCharacterNumberAsUpperCase(char character);
+
 		//Private variables
 	private:
 

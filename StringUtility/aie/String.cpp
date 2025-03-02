@@ -229,12 +229,29 @@ namespace aie
 		return m_characters[index];
 	}
 
-	//Checks to see if this string comes before the compareString, alphabetically
+	//Checks to see if this string comes before the compareString, alphabetically/numerically
 	bool String::operator<(const String& compareString)
 	{
+		//Go through my characters
+		for (int i = 0; i < m_length; i++)
+		{
+			//Get the number of the character, and the corresponding one in compareString
+			int characterNumber = GetCharacterNumberAsUpperCase(m_characters[i]);
+			int correspondingCharacterNumber = GetCharacterNumberAsUpperCase(compareString[i]);
 
+			//See if this character occurs after the corresponding one on the compareString
+			if (characterNumber > correspondingCharacterNumber)
+			{
+				return false; //As the string is no longer less than compareString, return false
+			}
+			//If the character occurs before the correspinding one
+			else if (characterNumber < correspondingCharacterNumber)
+			{
+				return true;
+			}
+		}
 
-		return false;
+		return false; //Both strings are equal
 	}
 
 
@@ -275,5 +292,18 @@ namespace aie
 			//Replace it with its lowercase variant
 			m_characters[i] = static_cast<char>(characterNumber + shift);
 		}
+	}
+
+	int aie::String::GetCharacterNumberAsUpperCase(char character)
+	{
+		int characterNumber = static_cast<int>(character);
+
+		//If this is a lowercase letter, change it to be uppercase
+		if (characterNumber >= LOWERCASE_START && characterNumber <= LOWERCASE_END)
+		{
+			characterNumber -= CASE_OFFSET;
+		}
+
+		return characterNumber;
 	}
 }
