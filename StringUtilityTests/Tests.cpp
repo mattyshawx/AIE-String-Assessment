@@ -1,6 +1,7 @@
 #include <format>
 #include <iostream>
 #include <iomanip>
+#include <Windows.h>
 
 #include "TestManager.h"
 
@@ -79,6 +80,15 @@ String stringCopy = string1;
 //Start up function
 DEFINE_TEST_INIT_FUNCTION(Initialise)
 {
+	//Enabled virtual terminal processing so coloured text comes through in the final exe
+	DWORD dwMode = 0;
+
+	HANDLE stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleMode(stdHandle, &dwMode);
+
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	SetConsoleMode(stdHandle, dwMode);
+
 	//Print hello world for compliance
 	String compliantString = "Hello, World!";
 	cout << compliantString << "\n\n\n";
@@ -525,4 +535,10 @@ DEFINE_TEST_FUNCTION(LessThanSimilar)
 DEFINE_TEST_SHUTDOWN_FUNCTION(Shutdown)
 {
 	cout << "Testing complete!\n\n";
+
+	//Have the user press enter to close the program, so they can look through the test results
+	cout << "Press enter to close";
+
+	String input;
+	input.ReadLine();
 }
