@@ -2,6 +2,9 @@
 #include <iostream>
 #include <iomanip>
 #include <Windows.h>
+#include <fstream>
+#include <sstream>
+#include <ctime>
 
 #include "TestManager.h"
 
@@ -14,6 +17,11 @@
 
 #define STRING(text) "\"" << text << "\""
 
+#define LOG_LINE(testName, successText) logResults << "Test," << testCount << "," << testName << "," << successText << "\n"; \
+	testCount++;
+#define LOG_SUCCESS(testName) LOG_LINE(testName, "Successful")
+#define LOG_FAIL(testName) LOG_LINE(testName, "Failed")
+
 using aie::String;
 using aie::TestManager;
 
@@ -21,6 +29,10 @@ using std::cout;
 using std::cin;
 
 using std::format;
+
+using std::ios;
+using std::fstream;
+using std::stringstream;
 
 
 #pragma region Example Functions
@@ -77,9 +89,18 @@ const String stringConstant = "I am the constant";
 const String stringEmpty;
 String stringCopy = string1;
 
+//Initialise a file stream
+fstream file;
+stringstream logResults; //Used to hold test results, so the time and success rate can be put in the file before them
+int testCount = 0;
+
+
 //Start up function
 DEFINE_TEST_INIT_FUNCTION(Initialise)
 {
+	//Attempt to open the log file for appending (will create it if it does not exist)
+	file.open("TestLog.csv", ios::out | ios::app);
+
 	//Enabled virtual terminal processing so coloured text comes through in the final exe
 	DWORD dwMode = 0;
 
@@ -126,8 +147,12 @@ DEFINE_TEST_FUNCTION(StreamOut)
 	{
 		reason = "The string streamed out was deemed incorrect";
 
+		LOG_FAIL("StreamOut"); //Writes a failure test result line to the logResults stream
+
 		return false;
 	}
+
+	LOG_SUCCESS("StreamOut"); //Writes a success test result line to the logResults stream
 
 	return true;
 }
@@ -150,8 +175,12 @@ DEFINE_TEST_FUNCTION(StreamIn)
 	{
 		reason = "The string streamed in was deemed incorrect";
 
+		LOG_FAIL("StreamIn");
+
 		return false;
 	}
+
+	LOG_SUCCESS("StreamIn");
 
 	return true;
 }
@@ -185,8 +214,12 @@ DEFINE_TEST_FUNCTION(Append)
 	{
 		reason = format("Incorrect result, expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
 
+		LOG_FAIL("Append");
+
 		return false;
 	}
+
+	LOG_SUCCESS("Append");
 
 	return true;
 }
@@ -210,8 +243,12 @@ DEFINE_TEST_FUNCTION(Lowercase)
 	{
 		reason = format("Expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
 
+		LOG_FAIL("Lowercase");
+
 		return false;
 	}
+
+	LOG_SUCCESS("Lowercase");
 
 	return true;
 }
@@ -235,8 +272,12 @@ DEFINE_TEST_FUNCTION(Uppercase)
 	{
 		reason = format("Expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
 
+		LOG_FAIL("Uppercase");
+
 		return false;
 	}
+
+	LOG_SUCCESS("Uppercase");
 
 	return true;
 }
@@ -264,11 +305,15 @@ DEFINE_TEST_FUNCTION(FindPresentCharacter)
 			reason = format("Supposed to find 'e', but found '{}' instead", string1[foundIndex]);
 		}
 
+		LOG_FAIL("FindPresentCharacter");
+
 		return false;
 	}
 
 	//Success message
 	cout << "It was found at index " << foundIndex;
+
+	LOG_SUCCESS("FindPresentCharacter");
 
 	return true;
 }
@@ -288,11 +333,15 @@ DEFINE_TEST_FUNCTION(FindNotPresentCharacter)
 	{
 		reason = "Supposedly found 'T', when it is not present";
 
+		LOG_FAIL("FindNonPresentCharacter");
+
 		return false;
 	}
 
 	//Success message
 	cout << "It was not found";
+
+	LOG_SUCCESS("FindNonPresentCharacter");
 
 	return true;
 }
@@ -315,8 +364,12 @@ DEFINE_TEST_FUNCTION(ReplaceCharacters)
 	{
 		reason = "Failed to replace all occurances of 'O'";
 
+		LOG_FAIL("ReplaceCharacters");
+
 		return false;
 	}
+
+	LOG_SUCCESS("ReplaceCharacters");
 
 	return true;
 }
@@ -343,9 +396,13 @@ DEFINE_TEST_FUNCTION(IndexInBounds)
 	{
 		reason = format("Expected 'w', got '{}'", resultingCharacter);
 
+		LOG_FAIL("IndexInBounds");
+
 		return false;
 	}
 	
+	LOG_SUCCESS("IndexInBounds");
+
 	return true;
 }
 
@@ -364,8 +421,12 @@ DEFINE_TEST_FUNCTION(IndexOutOfBounds)
 	{
 		reason = format("Expected '\\0' (null terminator), got '{}'", resultingCharacter);
 
+		LOG_FAIL("IndexOutOfBounds");
+
 		return false;
 	}
+
+	LOG_SUCCESS("IndexOutOfBounds");
 
 	return true;
 }
@@ -383,8 +444,12 @@ DEFINE_TEST_FUNCTION(Equality)
 	{
 		reason = "Expected two strings to be equal, but they were deemed different";
 
+		LOG_FAIL("Equality");
+
 		return false;
 	}
+
+	LOG_SUCCESS("Equality");
 
 	return true;
 }
@@ -402,8 +467,12 @@ DEFINE_TEST_FUNCTION(Inequality)
 	{
 		reason = "Expected two strings to be different, but they were deemed the same";
 
+		LOG_FAIL("Inequality");
+
 		return false;
 	}
+
+	LOG_SUCCESS("Inequality");
 
 	return true;
 }
@@ -424,10 +493,14 @@ DEFINE_TEST_FUNCTION(Equals)
 	{
 		reason = format("Failed to copy, was supposed to be \"{}\", but it was \"{}\"", string2.GetCharacters(), stringCopy.GetCharacters());
 
+		LOG_FAIL("Equals");
+
 		return false;
 	}
 
 	cout << "\nString 5 is now " << STRING(stringCopy);
+
+	LOG_SUCCESS("Equals");
 
 	return true;
 }
@@ -447,10 +520,14 @@ DEFINE_TEST_FUNCTION(LessThanTrue)
 	{
 		reason = "String 2 is supposed to occur BEFORE string 1, however the test returned otherwise";
 
+		LOG_FAIL("LessThanTrue");
+
 		return false;
 	}
 
 	cout << "\nString 2 comes before string 1";
+
+	LOG_SUCCESS("LessThanTrue");
 
 	return true;
 }
@@ -470,10 +547,14 @@ DEFINE_TEST_FUNCTION(LessThanFalse)
 	{
 		reason = "String 1 is supposed to occur AFTER string 2, however the test returned otherwise";
 
+		LOG_FAIL("LessThanFalse");
+
 		return false;
 	}
 
 	cout << "\nString 2 comes after string 1";
+
+	LOG_SUCCESS("LessThanFalse");
 
 	return true;
 }
@@ -493,10 +574,14 @@ DEFINE_TEST_FUNCTION(LessThanSame)
 	{
 		reason = "Neither string was supposed to occur before, however the test returned otherwise";
 
+		LOG_FAIL("LessThanSame");
+
 		return false;
 	}
 
 	cout << "\nNeither string comes after the other";
+
+	LOG_SUCCESS("LessThanSame");
 
 	return true;
 }
@@ -519,10 +604,14 @@ DEFINE_TEST_FUNCTION(LessThanSimilar)
 	{
 		reason = "String 2 is supposed to occur BEFORE string 1, however the test returned otherwise";
 
+		LOG_FAIL("LessThanSimilar");
+
 		return false;
 	}
 
 	cout << "\nString 2 comes before string 1";
+
+	LOG_SUCCESS("LessThanSimilar");
 
 	return true;
 }
@@ -534,6 +623,27 @@ DEFINE_TEST_FUNCTION(LessThanSimilar)
 
 DEFINE_TEST_SHUTDOWN_FUNCTION(Shutdown)
 {
+	//Get the date and time in a nice format
+	time_t timestamp = time(nullptr);
+	struct tm dateTime;
+	localtime_s(&dateTime, &timestamp);
+
+	char niceTime[100];
+	strftime(niceTime, 100, "Date: %m/%d/%Y,Time: %T", &dateTime);
+
+	//Figure out the success rate
+	float successRate = (passCount / static_cast<float>(maxTestCount)) * 100;
+	
+	//Write the date, time and success rate to the file
+	file << "\n" << niceTime << ",Successful " << std::fixed << std::setprecision(2) << successRate << "%\n";
+
+	//Write the test results to the file
+	file << logResults.str();
+
+	//Close the log file
+	file.close();
+
+	//Notify the user that testing has finished
 	cout << "Testing complete!\n\n";
 
 	//Have the user press enter to close the program, so they can look through the test results
