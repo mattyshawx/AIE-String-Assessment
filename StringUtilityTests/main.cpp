@@ -7,22 +7,17 @@
 // ReSharper disable once IdentifierTypo
 // ReSharper disable once CppInconsistentNaming
 
-#if _DEBUG //Memory leak catcher
-	#define _CRTDBG_MAP_ALLOC
-	#include <crtdbg.h>
-#endif
-
+#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
+
 #include <cstdlib>
 #endif
 
-
-
 #include <iostream>
+
 
 using aie::TestManager;
 
-using std::cout;
 
 int main()
 {

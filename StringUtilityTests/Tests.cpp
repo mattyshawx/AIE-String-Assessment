@@ -298,7 +298,7 @@ DEFINE_TEST_FUNCTION(ReplaceCharacters)
 	int replaceCount = string2.Replace('O', '5');
 	
 	cout << "String 2 is now " << STRING(string2) << "\n";
-	cout << "Replaced " << replaceCount << " occurances\n";
+	cout << "Replaced " << replaceCount << " occurances";
 
 	//Make sure the right replacement was done
 	if (replaceCount != 2)
@@ -515,4 +515,14 @@ DEFINE_TEST_FUNCTION(LessThanSimilar)
 	cout << "\nString 2 comes before string 1";
 
 	return true;
+}
+
+
+//------------------------------------------------------------------------
+//					Shutdown
+//------------------------------------------------------------------------
+
+DEFINE_TEST_SHUTDOWN_FUNCTION(Shutdown)
+{
+	cout << "Testing complete!\n\n";
 }
