@@ -28,7 +28,7 @@ int main()
 {
 #if _DEBUG //Catch those pesky bugguses
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtSetBreakAlloc(183);
+	//_CrtSetBreakAlloc(183); //Don't forget to comment this out when not using it mate
 #endif
 
 	TestManager::Run();

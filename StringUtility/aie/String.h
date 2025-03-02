@@ -54,6 +54,7 @@ namespace aie
 	private:
 
 		void SetCharacters(const char* newCharacters);
+		void ShiftCharacters(int lowerNumber, int upperNumber, int shift);
 
 		//Private variables
 	private:

@@ -5,6 +5,12 @@
 #include <iostream>
 #include <string> //Used for std::getline and nothing else
 
+#define LOWERCASE_START 97
+#define LOWERCASE_END 122
+#define UPPERCASE_START 65
+#define UPPERCASE_END 90
+#define CASE_OFFSET 32
+
 
 using std::cout;
 
@@ -97,11 +103,8 @@ namespace aie
 	//This converts all letters in the string to lower case
 	String& String::ToLower()
 	{
-		//Go through the characters
-		for (int i = 0; i < m_length; i++)
-		{
-			//Check and see if this character is an uppercase letter
-		}
+		//Shift over all the lowercase characters to be uppercase
+		this->ShiftCharacters(UPPERCASE_START, UPPERCASE_END, CASE_OFFSET);
 
 		return *this;
 	}
@@ -109,7 +112,8 @@ namespace aie
 	//Converts all letters in the string to upper case
 	String& String::ToUpper()
 	{
-
+		//Shift over all the uppercase characters to be lowercase
+		this->ShiftCharacters(LOWERCASE_START, LOWERCASE_END, -CASE_OFFSET);
 		
 		return *this;
 	}
@@ -117,17 +121,39 @@ namespace aie
 	//Finds a given character in the string and returns its index, or -1 if none
 	int String::FindCharacter(char targetCharacter)
 	{
-		
+		//Go through the characters (including the null terminator, incase that is the character to be found)
+		for (int i = 0; i < m_length + 1; i++)
+		{
+			//See if this is the right character
+			if (m_characters[i] == targetCharacter)
+			{
+				return i;
+			}
+		}
 
-		return -1;
+		return -1; //Nothing found, so return -1
 	}
 
 	//Replaces all occurences of a given character in the string, and returns the number of replacements done
 	int String::Replace(char targetCharacter, char replacementCharacter)
 	{
+		int replacementCount = 0;
 
+		//Go through the characters
+		for (int i = 0; i < m_length; i++)
+		{
+			//See if this character is the one to replace
+			if (m_characters[i] == targetCharacter)
+			{
+				//Replace it
+				m_characters[i] = replacementCharacter;
 
-		return 0;
+				//Increment the replacement counter
+				replacementCount++;
+			}
+		}
+
+		return replacementCount;
 	}
 
 	//This just returns m_characters
@@ -203,7 +229,7 @@ namespace aie
 		return m_characters[index];
 	}
 
-	//Checks to see if this string comes before the other one, alphabetically
+	//Checks to see if this string comes before the compareString, alphabetically
 	bool String::operator<(const String& compareString)
 	{
 
@@ -230,5 +256,24 @@ namespace aie
 
 		//Copy the new characters into my characters
 		strcpy_s(m_characters, m_length + 1, newCharacters);
+	}
+	
+	//This goes through m_characters, and shifts any between lowerNumber and upperNumber by shift
+	void String::ShiftCharacters(int lowerNumber, int upperNumber, int shift)
+	{
+		//Go through the characters
+		for (int i = 0; i < m_length; i++)
+		{
+			//Check and make sure that this character is an uppercase letter (needs to be made lowercase)
+			int characterNumber = static_cast<int>(m_characters[i]);
+
+			if (characterNumber < lowerNumber || characterNumber > upperNumber)
+			{
+				continue; //The character is not uppercase
+			}
+
+			//Replace it with its lowercase variant
+			m_characters[i] = static_cast<char>(characterNumber + shift);
+		}
 	}
 }

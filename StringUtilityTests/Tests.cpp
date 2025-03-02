@@ -51,7 +51,7 @@ DEFINE_TEST_FUNCTION(Example2)
 #pragma endregion
 
 
-bool VerifyOutput(std::string question)
+bool VerifyOutput(const char* question)
 {
 	//Question the user
 	cout << question << " (y/n):\n > ";
@@ -160,7 +160,7 @@ DEFINE_TEST_FUNCTION(Append)
 	cout << TEST_TITLE("Appending to a string");
 
 	//Create a new string to append
-	String stringToAppend = "I have been appended!";
+	String stringToAppend = "1234 HELLO!";
 
 	cout << "Appending " << STRING(stringToAppend) << " to string 2 (" << STRING(string2) << ")\n";
 
@@ -170,11 +170,36 @@ DEFINE_TEST_FUNCTION(Append)
 	cout << "String 2 is now " << STRING(string2);
 
 	//Verify that the appending worked properly
-	String correctString = "Okay bye...I have been appended!";
+	String correctString = "Okay bye...1234 HELLO!";
 
 	if (string2 != correctString)
 	{
 		reason = format("Incorrect result, expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
+
+		return false;
+	}
+
+	return true;
+}
+
+//Demonstrates the to lowercase function
+DEFINE_TEST_FUNCTION(Lowercase)
+{
+	cout << TEST_TITLE("Converting to lowercase");
+
+	cout << "Converting " << STRING(string2) << " to lowercase\n";
+
+	//Convert it to lowercase
+	string2.ToLower();
+
+	cout << "String 2 is now " << STRING(string2);
+
+	//Make sure it worked
+	String correctString = "okay bye...1234 hello!";
+
+	if (string2 != correctString)
+	{
+		reason = format("Expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
 
 		return false;
 	}
@@ -187,24 +212,105 @@ DEFINE_TEST_FUNCTION(Uppercase)
 {
 	cout << TEST_TITLE("Converting to uppercase");
 
-	cout << "converting " << STRING(string1) << " to uppercase";
+	cout << "Converting " << STRING(string2) << " to uppercase\n";
 
-	//Convert it to uppercase
-	string1.ToUpper();
+	//Convert it touppercase
+	string2.ToUpper();
 
-	cout << "String 1 is now " << STRING(string1);
+	cout << "String 2 is now " << STRING(string2);
 
 	//Make sure it worked
-	String correctString = "HELLO WORLD!";
+	String correctString = "OKAY BYE...1234 HELLO!";
 
-	if (string1 != correctString)
+	if (string2 != correctString)
 	{
-		reason = format("Expected \"{}\", but got \"{}\"", correctString, string1);
+		reason = format("Expected \"{}\", but got \"{}\"", correctString.GetCharacters(), string2.GetCharacters());
+
+		return false;
 	}
 
 	return true;
 }
 
+//Demonstrates the find character function, when the character is in the string
+DEFINE_TEST_FUNCTION(FindPresentCharacter)
+{
+	cout << TEST_TITLE("Finding character present");
+
+	//Find the character
+	int foundIndex = string1.FindCharacter('e');
+
+	cout << "Finding the letter 'e' in " << STRING(string1) << "\n";
+
+	//Make sure it found the right character
+	if (foundIndex != 1)
+	{
+		//See if nothing was found, or if the wrong character was
+		if (foundIndex == -1) //Nothing found
+		{
+			reason = "The character 'e' was not found";
+		}
+		else //Wrong character found
+		{
+			reason = format("Supposed to find 'e', but found '{}' instead", string1[foundIndex]);
+		}
+
+		return false;
+	}
+
+	//Success message
+	cout << "It was found at index " << foundIndex;
+
+	return true;
+}
+
+//Demonstrates the find character function, when the character is NOT the string
+DEFINE_TEST_FUNCTION(FindNotPresentCharacter)
+{
+	cout << TEST_TITLE("Finding a character not present");
+
+	//Find the character
+	int foundIndex = string1.FindCharacter('T');
+
+	cout << "Finding the letter 'T' in " << STRING(string1) << "\n";
+
+	//Make sure it found the right character
+	if (foundIndex != -1)
+	{
+		reason = "Supposedly found 'T', when it is not present";
+
+		return false;
+	}
+
+	//Success message
+	cout << "It was not found";
+
+	return true;
+}
+
+//Demonstrates the replace function
+DEFINE_TEST_FUNCTION(ReplaceCharacters)
+{
+	cout << TEST_TITLE("Replacing characters");
+
+	cout << "Replacing all occurances of 'O' with '5'\n";
+
+	//Replace the letter
+	int replaceCount = string2.Replace('O', '5');
+	
+	cout << "String 2 is now " << STRING(string2) << "\n";
+	cout << "Replaced " << replaceCount << " occurances\n";
+
+	//Make sure the right replacement was done
+	if (replaceCount != 2)
+	{
+		reason = "Failed to replace all occurances of 'O'";
+
+		return false;
+	}
+
+	return true;
+}
 
 //------------------------------------------------------------------------
 //					Operators
